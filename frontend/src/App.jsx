@@ -42,21 +42,9 @@ function RoleBadge({ role }) {
   return <span className="role-badge role-formateur">Formateur</span>
 }
 
-const DEMO_SESSION = {
-  token: 'demo-token',
-  user: { id: 'demo-admin', email: 'demo@pennylane.com', nom: 'Demo', prenom: 'Admin', role: 'admin' },
-}
-
-function initSession() {
-  const stored = getSession()
-  if (stored) return getCurrentUser()
-  // Auto-login as demo admin when no backend (GitHub Pages demo)
-  try { localStorage.setItem('pls_session', JSON.stringify(DEMO_SESSION)) } catch {}
-  return DEMO_SESSION.user
-}
-
 export default function App() {
-  const [user, setUser] = useState(initSession)
+  const stored = getSession()
+  const [user, setUser] = useState(stored ? getCurrentUser() : null)
   const [page, setPage] = useState(null)
 
   function handleLogin(role) {
