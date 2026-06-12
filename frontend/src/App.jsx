@@ -5,7 +5,6 @@ import CatalogueAFS from './pages/CatalogueAFS'
 import Sessions from './pages/Sessions'
 import Stagiaires from './pages/Stagiaires'
 import Documents from './pages/Documents'
-import VeilleJuridique from './pages/VeilleJuridique'
 import TableauDeBord from './pages/TableauDeBord'
 import VeilleFormateur from './pages/VeilleFormateur'
 import BanqueQuestions from './pages/BanqueQuestions'
@@ -18,7 +17,6 @@ const PAGES_ADMIN = [
   { id: 'documents',   label: 'Documents Qualiopi' },
   { id: 'questions',   label: 'Questionnaires' },
   { id: 'veille',      label: 'Veille juridique' },
-  { id: 'tableau',     label: 'Tableau de bord' },
 ]
 
 const PAGES_FORMATEUR = [
@@ -99,8 +97,7 @@ export default function App() {
         {currentPage === 'stagiaires' && <Stagiaires />}
         {currentPage === 'documents'  && <Documents />}
         {currentPage === 'questions'  && <BanqueQuestions />}
-        {currentPage === 'veille'     && (isAdmin ? <VeilleJuridique /> : <VeilleFormateur />)}
-        {currentPage === 'tableau'    && isAdmin && <TableauDeBord />}
+        {currentPage === 'veille'     && (isAdmin ? <TableauDeBord /> : <VeilleFormateur />)}
       </main>
     </div>
   )

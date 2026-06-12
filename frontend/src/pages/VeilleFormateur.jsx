@@ -44,12 +44,10 @@ export default function VeilleFormateur() {
                   </div>
                   <h2 className="vf-titre">{article.titre}</h2>
                   <p className="vf-resume">{article.resume}</p>
-                  {trace?.commentaire && (
-                    <div className="vf-note">
-                      <span className="vf-note-label">Note de la responsable</span>
-                      <p>{trace.commentaire}</p>
-                    </div>
-                  )}
+                  <div className="vf-note">
+                    <span className="vf-note-label">Message de la responsable</span>
+                    <p>{trace?.commentaire || <em>Aucun message complémentaire.</em>}</p>
+                  </div>
                   <div className="vf-footer">
                     <span className="vf-source">{source?.nom}</span>
                     <span className="vf-date">{new Date(article.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>

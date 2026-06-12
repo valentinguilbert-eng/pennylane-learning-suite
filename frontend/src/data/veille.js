@@ -6,6 +6,8 @@ export const SOURCES = [
   { id: 'senat',              nom: 'Sénat',               thematique: 'legislatif', url: 'https://www.senat.fr',        fiabilite: 'officiel', rss: 'http://www.senat.fr/rss/textes.xml' },
   { id: 'ministere-travail',  nom: 'Ministère du Travail', thematique: 'legislatif', url: 'https://travail-emploi.gouv.fr', fiabilite: 'officiel', rss: null },
   { id: 'legifrance',         nom: 'Légifrance',           thematique: 'legislatif', url: 'https://www.legifrance.gouv.fr', fiabilite: 'officiel', rss: null, api: 'https://piste.gouv.fr' },
+  { id: 'agefiph',            nom: 'Agefiph',              thematique: 'opco',       url: 'https://www.agefiph.fr',          fiabilite: 'officiel', rss: null },
+  { id: 'padlet-veille',      nom: 'Padlet Veille Formation (OPCO)', thematique: 'opco', url: 'https://padlet.com/veilleformation/les-immanquables-de-la-formation-les-opcos-faf-et-autres-org-vwc2frc8fdxp0jow', fiabilite: 'specialise', rss: null },
 ]
 
 export const THEMATIQUES = [

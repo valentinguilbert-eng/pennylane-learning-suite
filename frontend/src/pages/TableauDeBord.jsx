@@ -85,10 +85,12 @@ function ModaleTraitement({ article, onClose, onSave }) {
         )}
 
         <div className="modale-section">
-          <p className="modale-label">Commentaire (optionnel)</p>
+          <p className="modale-label">
+            {decision === 'diffuser' ? 'Message à l\'équipe (visible par les formateurs)' : 'Commentaire (optionnel)'}
+          </p>
           <textarea
             className="modale-textarea"
-            placeholder="Contexte, action à mener…"
+            placeholder={decision === 'diffuser' ? 'Contexte, points d\'attention, action à mener… Ce message sera affiché sur la fiche article.' : 'Note interne…'}
             value={commentaire}
             onChange={e => setCommentaire(e.target.value)}
             rows={3}
@@ -212,7 +214,7 @@ export default function TableauDeBord() {
       <div className="tdb-inner">
         <div className="tdb-head">
           <div>
-            <h1 className="tdb-title">Tableau de bord</h1>
+            <h1 className="tdb-title">Veille juridique</h1>
             <p className="tdb-subtitle">Responsable : {RESPONSABLE.prenom} {RESPONSABLE.nom} · {RESPONSABLE.email}</p>
           </div>
           <div className="tdb-head-actions">
