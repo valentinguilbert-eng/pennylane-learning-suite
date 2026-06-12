@@ -1,18 +1,31 @@
 .catalogue { display: flex; flex-direction: column; gap: 32px; }
 
 .catalogue-hero {
-  background: var(--vert-fonce);
+  background: var(--bg-dark);
   color: var(--blanc);
   border-radius: var(--radius);
   padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Trait de fond style crayon (charte graphique) */
+.catalogue-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -60px;
+  width: 340px; height: 340px;
+  border: 40px solid rgba(0, 248, 114, 0.07);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .hero-badge {
   display: inline-block;
   background: var(--vert);
-  color: var(--blanc);
-  font-size: 12px;
-  font-weight: 600;
+  color: var(--bg-dark);
+  font-size: 11px;
+  font-weight: 800;
   padding: 4px 12px;
   border-radius: 20px;
   margin-bottom: 12px;
@@ -20,8 +33,8 @@
   letter-spacing: 0.5px;
 }
 
-.hero-title { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
-.hero-sub { color: rgba(255,255,255,0.75); font-size: 15px; line-height: 1.7; }
+.hero-title { font-size: 28px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.03em; }
+.hero-sub { color: rgba(255,255,255,0.65); font-size: 15px; line-height: 1.7; }
 
 .catalogue-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
 

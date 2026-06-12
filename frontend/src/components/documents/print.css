@@ -22,13 +22,13 @@
   justify-content: space-between;
   align-items: flex-start;
   padding-bottom: 12px;
-  border-bottom: 3px solid #0A3D2B;
+  border-bottom: 3px solid #003D3D;
 }
 
 .doc-logo {
   font-size: 18pt;
   font-weight: 800;
-  color: #0A3D2B;
+  color: #003D3D;
   letter-spacing: -0.5px;
 }
 
@@ -43,7 +43,7 @@
 .doc-type-label {
   font-size: 13pt;
   font-weight: 800;
-  color: #0A3D2B;
+  color: #003D3D;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -56,11 +56,11 @@
 
 /* Bannière Qualiopi */
 .doc-qualiopi-banner {
-  background: #E8FBF3;
-  border-left: 4px solid #00C67A;
+  background: #DAFBF2;
+  border-left: 4px solid #00F872;
   padding: 6px 12px;
   font-size: 8pt;
-  color: #0A3D2B;
+  color: #003D3D;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -68,7 +68,7 @@
 }
 
 .qualiopi-badge {
-  background: #00C67A;
+  background: #00F872;
   color: #fff;
   font-weight: 800;
   font-size: 8pt;
@@ -92,7 +92,7 @@
 .doc-section-title {
   font-size: 10pt;
   font-weight: 700;
-  color: #0A3D2B;
+  color: #003D3D;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding-bottom: 4px;
@@ -125,10 +125,10 @@
   padding: 8px 10px;
   background: #F9FAFB;
   border-radius: 4px;
-  border-left: 3px solid #00C67A;
+  border-left: 3px solid #00F872;
 }
 
-.doc-modules-list li strong { display: block; font-size: 9.5pt; color: #0A3D2B; }
+.doc-modules-list li strong { display: block; font-size: 9.5pt; color: #003D3D; }
 .doc-modules-list li p { font-size: 8.5pt; color: #6B7280; margin-top: 2px; }
 
 /* Objectifs */
@@ -150,7 +150,7 @@
   content: '✓';
   position: absolute;
   left: 0;
-  color: #00C67A;
+  color: #00F872;
   font-weight: 700;
 }
 
@@ -207,7 +207,7 @@
 .ema-modules {
   font-size: 8.5pt;
   color: #374151;
-  background: #E8FBF3;
+  background: #DAFBF2;
   border-radius: 4px;
   padding: 6px 10px;
 }
@@ -219,7 +219,7 @@
 }
 
 .emargement-table th {
-  background: #0A3D2B;
+  background: #003D3D;
   color: #fff;
   padding: 7px 8px;
   text-align: left;
@@ -274,7 +274,7 @@
 }
 
 .attestation-beneficiaire {
-  background: #0A3D2B;
+  background: #003D3D;
   color: #fff;
   border-radius: 6px;
   padding: 14px 18px;
@@ -306,12 +306,12 @@
 }
 
 .formation-card-title {
-  background: #E8FBF3;
+  background: #DAFBF2;
   border-bottom: 1px solid #D1FAE5;
   padding: 10px 14px;
   font-size: 11pt;
   font-weight: 700;
-  color: #0A3D2B;
+  color: #003D3D;
 }
 
 .formation-card-details {
@@ -339,7 +339,7 @@
 .attestation-section h3 {
   font-size: 9.5pt;
   font-weight: 700;
-  color: #0A3D2B;
+  color: #003D3D;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding-bottom: 4px;
@@ -359,11 +359,11 @@
   padding: 6px 10px;
   background: #F9FAFB;
   border-radius: 4px;
-  border-left: 3px solid #00C67A;
+  border-left: 3px solid #00F872;
   color: #374151;
 }
 
-.attestation-competences li strong { color: #0A3D2B; }
+.attestation-competences li strong { color: #003D3D; }
 
 .attestation-objectifs {
   list-style: none;
@@ -384,7 +384,7 @@
   content: '✓';
   position: absolute;
   left: 0;
-  color: #00C67A;
+  color: #00F872;
   font-weight: 700;
 }
 

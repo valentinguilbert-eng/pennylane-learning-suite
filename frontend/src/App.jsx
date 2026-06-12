@@ -12,6 +12,17 @@ const PAGES = [
   { id: 'documents', label: 'Documents Qualiopi' },
 ]
 
+function PennylaneLogo() {
+  return (
+    <svg className="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Pennylane">
+      {/* Demi-cercle gauche — pupille dirigeant */}
+      <path d="M20 8 A12 12 0 0 0 20 32" stroke="#00F872" strokeWidth="5" strokeLinecap="round" fill="none"/>
+      {/* Demi-cercle droit — pupille expert-comptable */}
+      <path d="M20 12 A8 8 0 0 1 20 28" stroke="#ffffff" strokeWidth="5" strokeLinecap="round" fill="none"/>
+    </svg>
+  )
+}
+
 export default function App() {
   const [page, setPage] = useState('catalogue')
 
@@ -20,10 +31,12 @@ export default function App() {
       <header className="header">
         <div className="header-inner">
           <div className="header-logo">
-            <span className="logo-icon">◎</span>
-            <span className="logo-text">pennylane</span>
-            <span className="logo-sep">|</span>
-            <span className="logo-suite">Learning Suite</span>
+            <div className="logo-wordmark">
+              <PennylaneLogo />
+              <span className="logo-text">pennylane</span>
+            </div>
+            <div className="logo-sep" />
+            <span className="logo-suite">Learning Suite · AFS</span>
           </div>
           <nav className="header-nav">
             {PAGES.map(p => (
