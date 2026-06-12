@@ -1,0 +1,55 @@
+.tarifs-table {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+
+.tarifs-table h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.tarifs-note { font-size: 12px; color: var(--texte-secondaire); margin-bottom: 16px; }
+
+.tarifs-list { display: flex; flex-direction: column; gap: 2px; }
+
+.tarif-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  gap: 8px;
+}
+
+.tarif-row:hover { background: var(--gris); }
+
+.tarif-name { font-weight: 600; font-size: 14px; }
+.tarif-modules-hint { font-size: 12px; color: var(--texte-secondaire); margin-top: 2px; }
+
+.tarif-prices { display: flex; gap: 6px; flex-shrink: 0; }
+
+.price-chip {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.price-chip span { font-weight: 400; font-size: 11px; }
+.price-chip.visio { background: #EEF2FF; color: #6366F1; }
+.price-chip.pres { background: var(--vert-clair); color: #059669; }
+
+.tarifs-contact { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px; }
+
+.contact-btn {
+  display: block;
+  background: var(--vert-fonce);
+  color: var(--blanc);
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+
+.contact-btn:hover { opacity: 0.85; }

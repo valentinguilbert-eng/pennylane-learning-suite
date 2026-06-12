@@ -1,0 +1,140 @@
+.catalogue { display: flex; flex-direction: column; gap: 32px; }
+
+.catalogue-hero {
+  background: var(--vert-fonce);
+  color: var(--blanc);
+  border-radius: var(--radius);
+  padding: 40px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: var(--vert);
+  color: var(--blanc);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hero-title { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+.hero-sub { color: rgba(255,255,255,0.75); font-size: 15px; line-height: 1.7; }
+
+.catalogue-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+
+.catalogue-modules { display: flex; flex-direction: column; gap: 16px; }
+
+.section-header { margin-bottom: 8px; }
+.section-header h2 { font-size: 20px; font-weight: 700; }
+.section-header p { color: var(--texte-secondaire); font-size: 14px; margin-top: 4px; }
+
+.webinaires-section { margin-top: 8px; }
+.webinaires-section h3 { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+
+.webinaires-grid { display: flex; flex-direction: column; gap: 12px; }
+
+.webinaire-card {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+}
+
+.webinaire-card.offert { border-left: 4px solid var(--vert); }
+.webinaire-card.sur-devis { border-left: 4px solid #6366F1; }
+
+.webinaire-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 6px; }
+.webinaire-titre { font-weight: 600; font-size: 14px; flex: 1; }
+.prix-offert { background: var(--vert-clair); color: #059669; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+.prix-devis { background: #EEF2FF; color: #6366F1; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+.webinaire-meta { font-size: 12px; color: var(--texte-secondaire); margin-bottom: 8px; }
+.webinaire-contenu { list-style: none; font-size: 13px; color: var(--texte-secondaire); display: flex; flex-direction: column; gap: 2px; }
+.webinaire-contenu li::before { content: "→ "; color: var(--vert); }
+
+/* Aside */
+.catalogue-aside { }
+.aside-sticky { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 16px; }
+
+/* Devis panel */
+.devis-panel {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 2px solid var(--vert);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.devis-panel h3 { font-size: 16px; font-weight: 700; }
+
+.devis-modules { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.devis-module-tag {
+  background: var(--vert-clair);
+  color: #059669;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tag-remove {
+  background: none;
+  color: #059669;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.7;
+}
+
+.tag-remove:hover { opacity: 1; }
+
+.devis-tarif {
+  background: var(--gris);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tarif-label { font-size: 11px; color: var(--texte-secondaire); text-transform: uppercase; letter-spacing: 0.5px; }
+.tarif-value { font-size: 14px; font-weight: 600; }
+.tarif-prix { display: flex; gap: 12px; font-size: 13px; color: var(--texte-secondaire); }
+.tarif-prix strong { color: var(--texte); }
+
+.devis-cta {
+  display: block;
+  background: var(--vert);
+  color: var(--blanc);
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+
+.devis-cta:hover { background: #00a366; }
+
+.devis-reset {
+  background: none;
+  color: var(--texte-secondaire);
+  font-size: 13px;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.devis-reset:hover { color: var(--texte); }
+
+@media (max-width: 900px) {
+  .catalogue-layout { grid-template-columns: 1fr; }
+  .aside-sticky { position: static; }
+}
