@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getSession, logout, ROLES } from './data/auth'
+import { getSession, getCurrentUser, logout, ROLES } from './data/auth'
 import Login from './pages/Login'
 import CatalogueAFS from './pages/CatalogueAFS'
 import Sessions from './pages/Sessions'
@@ -43,29 +43,30 @@ function RoleBadge({ role }) {
 }
 
 export default function App() {
-  const [session, setSession] = useState(getSession())
+  const stored = getSession()
+  const [user, setUser] = useState(stored ? getCurrentUser() : null)
   const [page, setPage] = useState(null)
 
   function handleLogin(role) {
-    setSession({ role })
+    setUser(getCurrentUser())
     setPage(role === ROLES.admin ? 'catalogue' : 'veille')
   }
 
   function handleLogout() {
     logout()
-    setSession(null)
+    setUser(null)
     setPage('webinaires')
   }
 
   // Page publique accessible sans authentification
   const isPublicPage = page === 'webinaires'
 
-  if (!session && !isPublicPage) {
+  if (!user && !isPublicPage) {
     return <Login onLogin={handleLogin} onWebinaires={() => setPage('webinaires')} />
   }
 
   // Header public (non connecté) ou header connecté
-  if (!session) {
+  if (!user) {
     return (
       <div className="app">
         <header className="header">
@@ -95,7 +96,7 @@ export default function App() {
     )
   }
 
-  const isAdmin = session.role === ROLES.admin
+  const isAdmin = user?.role === ROLES.admin
   const pages = isAdmin ? PAGES_ADMIN : PAGES_FORMATEUR
   const currentPage = page || pages[0].id
 
@@ -123,7 +124,7 @@ export default function App() {
             ))}
           </nav>
           <div className="header-user">
-            <RoleBadge role={session.role} />
+            <RoleBadge role={user?.role} />
             <button className="btn-logout" onClick={handleLogout} title="Se déconnecter">
               Déconnexion
             </button>

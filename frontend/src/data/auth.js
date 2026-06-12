@@ -1,42 +1,65 @@
-// Auth locale simple — pour sécuriser sans backend
-// Mots de passe stockés en dur (frontend seulement — à remplacer par un vrai backend en prod)
+import { auth as authApi } from './api.js'
+
 export const ROLES = {
   admin:     'admin',
   formateur: 'formateur',
 }
 
-const CREDENTIALS = {
-  admin2026:     ROLES.admin,
-  formateur2026: ROLES.formateur,
-}
-
 const SESSION_KEY = 'pls_session'
 
-export function login(password) {
-  const role = CREDENTIALS[password]
-  if (!role) return null
-  const session = { role, loginAt: new Date().toISOString() }
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify(session))
-  return role
+// Demo credentials for GitHub Pages demo (no backend required)
+const DEMO_USERS = {
+  'demo@pennylane.com': {
+    password: 'demo2026',
+    user: { id: 'demo-admin', email: 'demo@pennylane.com', nom: 'Demo', prenom: 'Admin', role: 'admin' },
+  },
+  'formateur@demo.com': {
+    password: 'demo2026',
+    user: { id: 'demo-formateur', email: 'formateur@demo.com', nom: 'Demo', prenom: 'Formateur', role: 'formateur' },
+  },
+}
+
+export async function login(email, password) {
+  try {
+    const data = await authApi.login(email, password)
+    localStorage.setItem(SESSION_KEY, JSON.stringify(data))
+    return data.user.role
+  } catch (err) {
+    // If backend unreachable (network error), fall back to demo mode
+    const isNetworkError = err instanceof TypeError || err?.status === undefined
+    if (isNetworkError) {
+      const demo = DEMO_USERS[email.toLowerCase()]
+      if (demo && demo.password === password) {
+        const data = { token: 'demo-token', user: demo.user }
+        localStorage.setItem(SESSION_KEY, JSON.stringify(data))
+        return demo.user.role
+      }
+    }
+    throw err
+  }
 }
 
 export function logout() {
-  sessionStorage.removeItem(SESSION_KEY)
+  localStorage.removeItem(SESSION_KEY)
 }
 
 export function getSession() {
   try {
-    return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null')
+    return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null')
   } catch {
     return null
   }
 }
 
+export function getCurrentUser() {
+  return getSession()?.user || null
+}
+
 export function isAdmin() {
-  return getSession()?.role === ROLES.admin
+  return getCurrentUser()?.role === ROLES.admin
 }
 
 export function isFormateur() {
-  const role = getSession()?.role
+  const role = getCurrentUser()?.role
   return role === ROLES.formateur || role === ROLES.admin
 }

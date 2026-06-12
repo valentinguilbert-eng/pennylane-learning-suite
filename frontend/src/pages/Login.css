@@ -127,6 +127,40 @@
   font-weight: 700;
 }
 
+.login-demo {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  background: var(--vert-clair);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-demo-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--bg-dark);
+}
+
+.login-demo-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.login-demo-btn {
+  flex: 1;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--bg-dark);
+  color: var(--vert);
+  border-radius: 6px;
+  transition: opacity 0.15s;
+}
+.login-demo-btn:hover { opacity: 0.85; }
+
 .login-webinaires-link {
   margin-top: 4px;
   font-size: 13px;

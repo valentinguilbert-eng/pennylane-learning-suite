@@ -1,0 +1,17 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "apscheduler>=3.11.2",
+    "asyncpg>=0.31.0",
+    "granian>=2.5.7",
+    "litestar[standard]>=2.24.0",
+    "msgspec>=0.20.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-jose[cryptography]>=3.5.0",
+    "python-multipart>=0.0.20",
+    "resend>=2.30.1",
+]
