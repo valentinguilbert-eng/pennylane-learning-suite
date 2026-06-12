@@ -1,0 +1,429 @@
+/* Styles communs à tous les documents imprimables */
+
+.doc-page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 16mm 18mm;
+  background: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 10pt;
+  line-height: 1.5;
+  color: #1A1A1A;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Header */
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #0A3D2B;
+}
+
+.doc-logo {
+  font-size: 18pt;
+  font-weight: 800;
+  color: #0A3D2B;
+  letter-spacing: -0.5px;
+}
+
+.doc-logo-sub {
+  font-size: 8pt;
+  color: #6B7280;
+  margin-top: 2px;
+}
+
+.doc-header-right { text-align: right; }
+
+.doc-type-label {
+  font-size: 13pt;
+  font-weight: 800;
+  color: #0A3D2B;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.doc-ref {
+  font-size: 8pt;
+  color: #6B7280;
+  margin-top: 4px;
+}
+
+/* Bannière Qualiopi */
+.doc-qualiopi-banner {
+  background: #E8FBF3;
+  border-left: 4px solid #00C67A;
+  padding: 6px 12px;
+  font-size: 8pt;
+  color: #0A3D2B;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 0 4px 4px 0;
+}
+
+.qualiopi-badge {
+  background: #00C67A;
+  color: #fff;
+  font-weight: 800;
+  font-size: 8pt;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.qualiopi-badge.small {
+  font-size: 7pt;
+  padding: 1px 6px;
+}
+
+/* Sections */
+.doc-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doc-section-title {
+  font-size: 10pt;
+  font-weight: 700;
+  color: #0A3D2B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+/* Grille d'infos */
+.doc-info-grid { display: flex; flex-direction: column; gap: 4px; }
+
+.doc-info-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 8px;
+  font-size: 9.5pt;
+}
+
+.doc-info-row span { color: #6B7280; }
+.doc-info-row strong { color: #1A1A1A; }
+
+/* Liste modules */
+.doc-modules-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doc-modules-list li {
+  padding: 8px 10px;
+  background: #F9FAFB;
+  border-radius: 4px;
+  border-left: 3px solid #00C67A;
+}
+
+.doc-modules-list li strong { display: block; font-size: 9.5pt; color: #0A3D2B; }
+.doc-modules-list li p { font-size: 8.5pt; color: #6B7280; margin-top: 2px; }
+
+/* Objectifs */
+.doc-objectives-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.doc-objectives-list li {
+  font-size: 9pt;
+  padding: 3px 0 3px 14px;
+  position: relative;
+}
+
+.doc-objectives-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #00C67A;
+  font-weight: 700;
+}
+
+/* Texte générique */
+.doc-text { font-size: 9pt; color: #374151; }
+
+.doc-note-box {
+  background: #FFFBEB;
+  border-left: 3px solid #F59E0B;
+  padding: 6px 10px;
+  font-size: 8.5pt;
+  color: #374151;
+  border-radius: 0 4px 4px 0;
+  margin-top: 4px;
+}
+
+/* Footer */
+.doc-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #E5E7EB;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 7.5pt;
+  color: #9CA3AF;
+}
+
+.doc-footer-right { text-align: right; }
+.doc-footer-qualiopi { display: flex; align-items: center; gap: 6px; }
+
+/* =================== ÉMARGEMENT =================== */
+
+.emargement-session-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  background: #F9FAFB;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.ema-info-col { display: flex; flex-direction: column; gap: 5px; }
+
+.ema-info-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 6px;
+  font-size: 9pt;
+}
+.ema-info-row span { color: #6B7280; }
+.ema-info-row strong { color: #1A1A1A; }
+
+.ema-modules {
+  font-size: 8.5pt;
+  color: #374151;
+  background: #E8FBF3;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+.emargement-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+}
+
+.emargement-table th {
+  background: #0A3D2B;
+  color: #fff;
+  padding: 7px 8px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 8pt;
+}
+
+.emargement-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #E5E7EB;
+  vertical-align: middle;
+  font-size: 8.5pt;
+}
+
+.row-even { background: #fff; }
+.row-odd { background: #F9FAFB; }
+
+.col-num { width: 30px; text-align: center; color: #6B7280; }
+.col-nom { width: 170px; }
+.col-fonction { width: 130px; color: #374151; }
+.col-cabinet { width: 140px; color: #374151; }
+.col-signature { width: 80px; }
+
+.sig-header { text-align: center; }
+.sig-periode { font-weight: 700; font-size: 8pt; }
+.sig-label { font-size: 7pt; color: #D1D5DB; }
+
+.sig-box {
+  height: 36px;
+  border: 1px solid #D1D5DB;
+  border-radius: 3px;
+  background: #fff;
+}
+
+.emargement-signatures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.sig-zone { display: flex; flex-direction: column; gap: 4px; }
+.sig-zone-label { font-size: 8pt; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.4px; }
+.sig-zone-name { font-size: 9pt; font-weight: 600; }
+.sig-zone-box { height: 60px; border: 1.5px solid #D1D5DB; border-radius: 4px; background: #fff; margin-top: 4px; }
+
+/* =================== ATTESTATION =================== */
+
+.attestation-intro {
+  font-size: 10pt;
+  line-height: 1.7;
+}
+
+.attestation-beneficiaire {
+  background: #0A3D2B;
+  color: #fff;
+  border-radius: 6px;
+  padding: 14px 18px;
+  text-align: center;
+}
+
+.beneficiaire-name {
+  font-size: 16pt;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.beneficiaire-detail {
+  font-size: 9pt;
+  color: rgba(255,255,255,0.8);
+  margin-top: 3px;
+}
+
+.attestation-body-text {
+  font-size: 10pt;
+  color: #374151;
+}
+
+.attestation-formation-card {
+  background: #F9FAFB;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.formation-card-title {
+  background: #E8FBF3;
+  border-bottom: 1px solid #D1FAE5;
+  padding: 10px 14px;
+  font-size: 11pt;
+  font-weight: 700;
+  color: #0A3D2B;
+}
+
+.formation-card-details {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.formation-detail-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 8px;
+  font-size: 9pt;
+}
+.formation-detail-row span { color: #6B7280; }
+.formation-detail-row strong { color: #1A1A1A; }
+
+.attestation-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attestation-section h3 {
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: #0A3D2B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.attestation-competences {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.attestation-competences li {
+  font-size: 9pt;
+  padding: 6px 10px;
+  background: #F9FAFB;
+  border-radius: 4px;
+  border-left: 3px solid #00C67A;
+  color: #374151;
+}
+
+.attestation-competences li strong { color: #0A3D2B; }
+
+.attestation-objectifs {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.attestation-objectifs li {
+  font-size: 9pt;
+  padding: 2px 0 2px 14px;
+  position: relative;
+  color: #374151;
+}
+
+.attestation-objectifs li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #00C67A;
+  font-weight: 700;
+}
+
+.attestation-delivery {
+  font-size: 9pt;
+  color: #6B7280;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.attestation-sign-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.sign-block { display: flex; flex-direction: column; gap: 4px; }
+.sign-label { font-size: 8pt; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.4px; }
+.sign-name { font-size: 9.5pt; font-weight: 600; }
+.sign-box { height: 70px; border: 1.5px solid #D1D5DB; border-radius: 4px; background: #fff; margin-top: 4px; }
+
+/* =================== IMPRESSION =================== */
+@media print {
+  body { margin: 0; padding: 0; background: #fff; }
+
+  .doc-page {
+    width: 100%;
+    min-height: auto;
+    padding: 12mm 15mm;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  .no-print { display: none !important; }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}
