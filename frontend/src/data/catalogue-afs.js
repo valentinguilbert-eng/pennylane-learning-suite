@@ -175,6 +175,7 @@ export const WEBINAIRES_EMBARQUEMENT = [
     prix: "Offert",
     apprenants: "Sans limite",
     contenu: ["Présentation de Pennylane", "Paramétrage de l'outil", "Découverte des modules facturation", "Imports de factures, réconciliation"],
+    url: "https://app.livestorm.co/pennylane-8/introduction-a-la-compta-light-sur-pennylane",
   },
   {
     id: "webinar_collectif_compta",
@@ -183,6 +184,7 @@ export const WEBINAIRES_EMBARQUEMENT = [
     prix: "Offert",
     apprenants: "Sans limite",
     contenu: ["Présentation de Pennylane", "Paramétrage de l'outil", "Découverte des modules comptables", "Imports de factures, réconciliation"],
+    url: "https://app.livestorm.co/pennylane-8/decouverte-de-votre-nouvelle-plateforme-collaborative",
   },
   {
     id: "webinar_privatif",
@@ -191,5 +193,6 @@ export const WEBINAIRES_EMBARQUEMENT = [
     prix: "Sur devis",
     apprenants: "Sans limite",
     contenu: ["Embarquement selon plan d'abonnement", "Présentation exclusive à votre cabinet", "Accès limité à vos clients", "Adaptation possible à votre demande"],
+    url: "mailto:afs@pennylane.com?subject=Demande%20webinar%20privatif",
   },
 ]

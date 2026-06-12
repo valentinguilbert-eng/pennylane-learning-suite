@@ -63,6 +63,16 @@ export default function CatalogueAFS() {
                   <ul className="webinaire-contenu">
                     {w.contenu.map((item, i) => <li key={i}>{item}</li>)}
                   </ul>
+                  {w.url && (
+                    <a
+                      href={w.url}
+                      target={w.url.startsWith('mailto') ? '_self' : '_blank'}
+                      rel="noopener noreferrer"
+                      className={`webinaire-inscrire ${w.prix === 'Sur devis' ? 'inscrire-devis' : ''}`}
+                    >
+                      {w.prix === 'Sur devis' ? 'Demander un devis →' : 'S\'inscrire gratuitement →'}
+                    </a>
+                  )}
                 </div>
               ))}
             </div>

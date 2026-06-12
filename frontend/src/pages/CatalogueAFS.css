@@ -66,6 +66,9 @@
 .webinaire-meta { font-size: 12px; color: var(--texte-secondaire); margin-bottom: 8px; }
 .webinaire-contenu { list-style: none; font-size: 13px; color: var(--texte-secondaire); display: flex; flex-direction: column; gap: 2px; }
 .webinaire-contenu li::before { content: "→ "; color: var(--vert); }
+.webinaire-inscrire { display: inline-block; margin-top: 12px; padding: 7px 14px; background: var(--bg-dark); color: var(--vert); font-size: 12px; font-weight: 700; border-radius: 6px; text-decoration: none; transition: opacity 0.15s; }
+.webinaire-inscrire:hover { opacity: 0.85; }
+.webinaire-inscrire.inscrire-devis { background: #EEF2FF; color: #6366F1; }
 
 /* Aside */
 .catalogue-aside { }
