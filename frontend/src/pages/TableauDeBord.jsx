@@ -202,6 +202,36 @@ export default function TableauDeBord() {
     URL.revokeObjectURL(url)
   }
 
+  function handleSauvegarder() {
+    const blob = new Blob([JSON.stringify(traitements, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `sauvegarde-veille-${new Date().toISOString().slice(0, 10)}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  function handleRestaurer(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result)
+        if (!Array.isArray(data)) throw new Error('Format invalide')
+        if (!window.confirm(`Restaurer ${data.length} trace(s) ? Les données actuelles seront remplacées.`)) return
+        localStorage.setItem('pls_traitements', JSON.stringify(data))
+        setTraitements(data)
+        alert('Restauration réussie ✓')
+      } catch {
+        alert('Fichier invalide — utilisez un fichier de sauvegarde .json généré par cette application.')
+      }
+    }
+    reader.readAsText(file)
+    e.target.value = ''
+  }
+
   const stats = useMemo(() => ({
     total: ARTICLES.length,
     traites: traitements.length,
@@ -218,6 +248,13 @@ export default function TableauDeBord() {
             <p className="tdb-subtitle">Responsable : {RESPONSABLE.prenom} {RESPONSABLE.nom} · {RESPONSABLE.email}</p>
           </div>
           <div className="tdb-head-actions">
+            <button className="btn-sauvegarder" onClick={handleSauvegarder} title="Sauvegarder toutes les traces en JSON">
+              ↓ Sauvegarder
+            </button>
+            <label className="btn-restaurer" title="Restaurer depuis une sauvegarde JSON">
+              ↑ Restaurer
+              <input type="file" accept=".json" onChange={handleRestaurer} style={{ display: 'none' }} />
+            </label>
             <button className="btn-export" onClick={handleExport} title="Exporter le registre Qualiopi">
               ↓ Registre Qualiopi (CSV)
             </button>

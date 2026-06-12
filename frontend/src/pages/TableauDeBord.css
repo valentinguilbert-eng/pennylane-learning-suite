@@ -31,6 +31,31 @@
 }
 .btn-export:hover { background: var(--bg-medium); }
 
+.btn-sauvegarder {
+  background: var(--vert);
+  color: var(--bg-dark);
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: opacity 0.15s;
+}
+.btn-sauvegarder:hover { opacity: 0.85; }
+
+.btn-restaurer {
+  background: var(--vert-clair);
+  color: var(--bg-dark);
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-restaurer:hover { opacity: 0.75; }
+
 /* Stats */
 .stats-grid {
   display: grid;
