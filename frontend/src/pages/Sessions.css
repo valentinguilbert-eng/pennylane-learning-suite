@@ -1,0 +1,183 @@
+.sessions { display: flex; flex-direction: column; gap: 24px; }
+
+.sessions-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sessions-title { font-size: 24px; font-weight: 700; }
+.sessions-sub { color: var(--texte-secondaire); font-size: 14px; margin-top: 4px; }
+
+.btn-primary {
+  background: var(--vert);
+  color: var(--blanc);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: #00a366; }
+
+.sessions-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: var(--blanc);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--texte-secondaire);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--vert); color: var(--vert); }
+.filter-btn.active { font-weight: 600; }
+
+.filter-count {
+  background: var(--gris);
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 11px;
+}
+
+.sessions-empty {
+  text-align: center;
+  padding: 64px 24px;
+  background: var(--blanc);
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--texte-secondaire);
+}
+.empty-icon { font-size: 40px; }
+
+.sessions-list { display: flex; flex-direction: column; gap: 12px; }
+
+/* Session card */
+.session-card {
+  background: var(--blanc);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: box-shadow 0.15s;
+}
+.session-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.07); }
+
+.session-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.session-card-left { display: flex; flex-direction: column; gap: 4px; }
+
+.session-statut-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  width: fit-content;
+}
+
+.session-titre { font-size: 17px; font-weight: 700; }
+.session-client { font-size: 13px; color: var(--texte-secondaire); }
+
+.session-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.btn-icon {
+  background: var(--gris);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+.btn-icon:hover { background: var(--border); }
+.btn-icon.btn-danger:hover { background: #FEE2E2; }
+
+.session-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--texte-secondaire);
+}
+.meta-icon { font-size: 14px; }
+
+.session-modules { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.session-module-tag {
+  background: var(--vert-clair);
+  color: #059669;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.session-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.participants-bar-wrap { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.participants-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--texte-secondaire); }
+.participants-pct { font-weight: 600; }
+
+.participants-bar {
+  height: 6px;
+  background: var(--gris);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.participants-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+.session-prix {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--vert-fonce);
+  white-space: nowrap;
+}
+
+.session-notes {
+  font-size: 13px;
+  color: var(--texte-secondaire);
+  background: #FFFBEB;
+  border-radius: 6px;
+  padding: 8px 12px;
+  border-left: 3px solid #F59E0B;
+}

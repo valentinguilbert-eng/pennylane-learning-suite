@@ -1,7 +1,17 @@
+import { useState } from 'react'
 import CatalogueAFS from './pages/CatalogueAFS'
+import Sessions from './pages/Sessions'
 import './App.css'
 
+const PAGES = [
+  { id: 'catalogue', label: 'Catalogue AFS' },
+  { id: 'sessions', label: 'Sessions' },
+  { id: 'stagiaires', label: 'Stagiaires', disabled: true },
+]
+
 export default function App() {
+  const [page, setPage] = useState('catalogue')
+
   return (
     <div className="app">
       <header className="header">
@@ -13,14 +23,24 @@ export default function App() {
             <span className="logo-suite">Learning Suite</span>
           </div>
           <nav className="header-nav">
-            <a className="nav-link active" href="#">Catalogue AFS</a>
-            <a className="nav-link" href="#">Sessions</a>
-            <a className="nav-link" href="#">Stagiaires</a>
+            {PAGES.map(p => (
+              <button
+                key={p.id}
+                className={`nav-link ${page === p.id ? 'active' : ''} ${p.disabled ? 'disabled' : ''}`}
+                onClick={() => !p.disabled && setPage(p.id)}
+                disabled={p.disabled}
+                title={p.disabled ? 'Prochainement' : undefined}
+              >
+                {p.label}
+                {p.disabled && <span className="nav-soon">bientôt</span>}
+              </button>
+            ))}
           </nav>
         </div>
       </header>
       <main className="main">
-        <CatalogueAFS />
+        {page === 'catalogue' && <CatalogueAFS />}
+        {page === 'sessions' && <Sessions />}
       </main>
     </div>
   )

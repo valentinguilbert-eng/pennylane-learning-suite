@@ -41,7 +41,9 @@
   transition: all 0.15s;
 }
 
-.nav-link:hover { background: rgba(255,255,255,0.1); color: var(--blanc); }
+.nav-link:hover:not(.disabled) { background: rgba(255,255,255,0.1); color: var(--blanc); }
 .nav-link.active { background: var(--vert); color: var(--blanc); }
+.nav-link.disabled { opacity: 0.45; cursor: default; }
+.nav-soon { font-size: 10px; background: rgba(255,255,255,0.15); padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
 
 .main { flex: 1; padding: 32px 24px; max-width: 1200px; margin: 0 auto; width: 100%; }
