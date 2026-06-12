@@ -65,12 +65,14 @@
 .header-nav { display: flex; gap: 2px; }
 
 .nav-link {
+  -webkit-appearance: none;
+  appearance: none;
   padding: 7px 14px;
   border-radius: 8px;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--blanc);
-  background: rgba(255,255,255,0.08);
+  color: var(--blanc) !important;
+  background: rgba(255,255,255,0.08) !important;
   border: 1.5px solid rgba(255,255,255,0.18);
   transition: all 0.15s;
   letter-spacing: -0.01em;
