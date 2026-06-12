@@ -27,8 +27,9 @@ export default function Login({ onLogin }) {
       <div className="login-card">
         <div className="login-logo">
           <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="login-svg">
-            <path d="M20 8 A12 12 0 0 0 20 32" stroke="#00F872" strokeWidth="5" strokeLinecap="round" fill="none"/>
-            <path d="M20 12 A8 8 0 0 1 20 28" stroke="#ffffff" strokeWidth="5" strokeLinecap="round" fill="none"/>
+            <circle cx="20" cy="20" r="20" fill="#00F872"/>
+            <rect x="13" y="13" width="3.5" height="18" rx="1.75" fill="#003D3D"/>
+            <path d="M16.5 14.5 C16.5 14.5 24.5 14.5 24.5 20.5 C24.5 26.5 16.5 26.5 16.5 26.5" stroke="#003D3D" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
           </svg>
           <span className="login-wordmark">pennylane</span>
         </div>

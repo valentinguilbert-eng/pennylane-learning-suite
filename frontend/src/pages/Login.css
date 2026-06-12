@@ -28,11 +28,10 @@
 }
 
 .login-svg {
-  width: 36px;
-  height: 36px;
-  background: var(--bg-dark);
-  border-radius: 10px;
-  padding: 4px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .login-wordmark {
