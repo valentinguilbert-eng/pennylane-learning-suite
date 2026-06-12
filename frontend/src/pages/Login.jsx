@@ -21,6 +21,12 @@ export default function Login({ onLogin, onWebinaires }) {
     }
   }
 
+  function fillDemo(demoEmail) {
+    setEmail(demoEmail)
+    setPassword('demo2026')
+    setError('')
+  }
+
   return (
     <div className="login-page">
       <div className="login-card">
@@ -64,6 +70,18 @@ export default function Login({ onLogin, onWebinaires }) {
             {loading ? 'Connexion…' : 'Se connecter'}
           </button>
         </form>
+
+        <div className="login-demo">
+          <p className="login-demo-label">Accès démo (sans backend) :</p>
+          <div className="login-demo-btns">
+            <button type="button" className="login-demo-btn" onClick={() => fillDemo('demo@pennylane.com')}>
+              Admin demo
+            </button>
+            <button type="button" className="login-demo-btn" onClick={() => fillDemo('formateur@demo.com')}>
+              Formateur demo
+            </button>
+          </div>
+        </div>
 
         {onWebinaires && (
           <button type="button" className="login-webinaires-link" onClick={onWebinaires}>

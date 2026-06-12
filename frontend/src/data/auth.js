@@ -7,11 +7,36 @@ export const ROLES = {
 
 const SESSION_KEY = 'pls_session'
 
+// Demo credentials for GitHub Pages demo (no backend required)
+const DEMO_USERS = {
+  'demo@pennylane.com': {
+    password: 'demo2026',
+    user: { id: 'demo-admin', email: 'demo@pennylane.com', nom: 'Demo', prenom: 'Admin', role: 'admin' },
+  },
+  'formateur@demo.com': {
+    password: 'demo2026',
+    user: { id: 'demo-formateur', email: 'formateur@demo.com', nom: 'Demo', prenom: 'Formateur', role: 'formateur' },
+  },
+}
+
 export async function login(email, password) {
-  const data = await authApi.login(email, password)
-  // data = { token, user: { id, email, nom, prenom, role } }
-  localStorage.setItem(SESSION_KEY, JSON.stringify(data))
-  return data.user.role
+  try {
+    const data = await authApi.login(email, password)
+    localStorage.setItem(SESSION_KEY, JSON.stringify(data))
+    return data.user.role
+  } catch (err) {
+    // If backend unreachable (network error), fall back to demo mode
+    const isNetworkError = err instanceof TypeError || err?.status === undefined
+    if (isNetworkError) {
+      const demo = DEMO_USERS[email.toLowerCase()]
+      if (demo && demo.password === password) {
+        const data = { token: 'demo-token', user: demo.user }
+        localStorage.setItem(SESSION_KEY, JSON.stringify(data))
+        return demo.user.role
+      }
+    }
+    throw err
+  }
 }
 
 export function logout() {
