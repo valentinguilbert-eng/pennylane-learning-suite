@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react'
 import { getStagiaires, getInscriptionsBySession, inscrire, desinscrire, updatePresence, updateStatutInscription, STATUTS_INSCRIPTION } from '../data/stagiaires'
 import { FORMATS, STATUTS, ALL_MODULES } from '../data/sessions'
+import { getResultat, calculerProgression } from '../data/questionnaires'
+import Passation from '../pages/Passation'
 import './SessionDetail.css'
 
+const TABS = ['participants', 'evaluations']
+
 export default function SessionDetail({ session, onClose, onEdit }) {
+  const [tab, setTab] = useState('participants')
   const [inscriptions, setInscriptions] = useState([])
   const [stagiaires, setStagiaires] = useState([])
   const [searchAjout, setSearchAjout] = useState('')
   const [showAjout, setShowAjout] = useState(false)
+  const [passation, setPassation] = useState(null) // { stagiaireId, type }
 
   useEffect(() => {
     setStagiaires(getStagiaires())
@@ -60,6 +66,18 @@ export default function SessionDetail({ session, onClose, onEdit }) {
     ? new Date(session.date + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
     : '—'
 
+  // Si en mode passation, afficher uniquement le composant de passation
+  if (passation) {
+    return (
+      <Passation
+        sessionId={session.id}
+        stagiaireId={passation.stagiaireId}
+        type={passation.type}
+        onDone={() => { setPassation(null); refresh() }}
+      />
+    )
+  }
+
   return (
     <div className="session-detail">
       <div className="detail-topbar">
@@ -68,117 +86,139 @@ export default function SessionDetail({ session, onClose, onEdit }) {
       </div>
 
       <div className="detail-layout">
-        {/* Colonne principale — inscrits */}
+        {/* Colonne principale */}
         <div className="detail-main">
-          <div className="inscrits-header">
-            <div>
-              <h2>Participants inscrits</h2>
-              <p>{inscriptions.length} / {session.participants_max || 15} places
-                {nbPresents > 0 && <span className="presence-summary"> · {nbPresents} présent{nbPresents > 1 ? 's' : ''}</span>}
-                {nbAbsents > 0 && <span className="absence-summary"> · {nbAbsents} absent{nbAbsents > 1 ? 's' : ''}</span>}
-              </p>
-            </div>
-            <button className="btn-primary" onClick={() => setShowAjout(v => !v)}>
-              {showAjout ? '— Fermer' : '+ Ajouter'}
+          <div className="detail-tabs">
+            <button className={`detail-tab ${tab === 'participants' ? 'active' : ''}`} onClick={() => setTab('participants')}>
+              👥 Participants
+            </button>
+            <button className={`detail-tab ${tab === 'evaluations' ? 'active' : ''}`} onClick={() => setTab('evaluations')}>
+              📊 Évaluations Qualiopi
             </button>
           </div>
 
-          {showAjout && (
-            <div className="ajout-panel">
-              <input
-                autoFocus
-                type="text"
-                placeholder="Rechercher un stagiaire par nom, cabinet, email…"
-                value={searchAjout}
-                onChange={e => setSearchAjout(e.target.value)}
-              />
-              <div className="ajout-list">
-                {filtresAjout.length === 0 ? (
-                  <div className="ajout-empty">
-                    {nonInscrits.length === 0 ? 'Tous les stagiaires sont déjà inscrits' : 'Aucun résultat'}
-                  </div>
-                ) : (
-                  filtresAjout.slice(0, 8).map(s => (
-                    <button key={s.id} className="ajout-item" onClick={() => handleInscrire(s.id)}>
-                      <div className="ajout-avatar">{s.prenom[0]}{s.nom[0]}</div>
-                      <div className="ajout-info">
-                        <span className="ajout-nom">{s.prenom} {s.nom}</span>
-                        <span className="ajout-cabinet">{s.cabinet || s.email}</span>
-                      </div>
-                      <span className="ajout-plus">+</span>
-                    </button>
-                  ))
-                )}
+          {tab === 'participants' && (
+            <>
+              <div className="inscrits-header">
+                <div>
+                  <h2>Participants inscrits</h2>
+                  <p>{inscriptions.length} / {session.participants_max || 15} places
+                    {nbPresents > 0 && <span className="presence-summary"> · {nbPresents} présent{nbPresents > 1 ? 's' : ''}</span>}
+                    {nbAbsents > 0 && <span className="absence-summary"> · {nbAbsents} absent{nbAbsents > 1 ? 's' : ''}</span>}
+                  </p>
+                </div>
+                <button className="btn-primary" onClick={() => setShowAjout(v => !v)}>
+                  {showAjout ? '— Fermer' : '+ Ajouter'}
+                </button>
               </div>
-            </div>
+
+              {showAjout && (
+                <div className="ajout-panel">
+                  <input
+                    autoFocus
+                    type="text"
+                    placeholder="Rechercher un stagiaire par nom, cabinet, email…"
+                    value={searchAjout}
+                    onChange={e => setSearchAjout(e.target.value)}
+                  />
+                  <div className="ajout-list">
+                    {filtresAjout.length === 0 ? (
+                      <div className="ajout-empty">
+                        {nonInscrits.length === 0 ? 'Tous les stagiaires sont déjà inscrits' : 'Aucun résultat'}
+                      </div>
+                    ) : (
+                      filtresAjout.slice(0, 8).map(s => (
+                        <button key={s.id} className="ajout-item" onClick={() => handleInscrire(s.id)}>
+                          <div className="ajout-avatar">{s.prenom[0]}{s.nom[0]}</div>
+                          <div className="ajout-info">
+                            <span className="ajout-nom">{s.prenom} {s.nom}</span>
+                            <span className="ajout-cabinet">{s.cabinet || s.email}</span>
+                          </div>
+                          <span className="ajout-plus">+</span>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {inscriptions.length === 0 ? (
+                <div className="inscrits-empty">
+                  <div className="empty-icon">👥</div>
+                  <p>Aucun participant inscrit</p>
+                  <button className="btn-primary" onClick={() => setShowAjout(true)}>Ajouter des participants</button>
+                </div>
+              ) : (
+                <div className="inscrits-table-wrap">
+                  <table className="inscrits-table">
+                    <thead>
+                      <tr>
+                        <th>Participant</th>
+                        <th>Statut</th>
+                        <th>Présence</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {inscriptions.map(ins => {
+                        const stag = stagiaires.find(s => s.id === ins.stagiaireId)
+                        if (!stag) return null
+                        const statutIns = STATUTS_INSCRIPTION.find(s => s.id === ins.statut) || STATUTS_INSCRIPTION[0]
+                        return (
+                          <tr key={ins.id} className="inscrit-row">
+                            <td>
+                              <div className="inscrit-identity">
+                                <div className="inscrit-avatar">{stag.prenom[0]}{stag.nom[0]}</div>
+                                <div>
+                                  <div className="inscrit-nom">{stag.prenom} {stag.nom}</div>
+                                  <div className="inscrit-cabinet">{stag.cabinet || stag.email}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <select
+                                className="statut-select"
+                                value={ins.statut}
+                                style={{ color: statutIns.color }}
+                                onChange={e => handleStatut(stag.id, e.target.value)}
+                              >
+                                {STATUTS_INSCRIPTION.map(s => (
+                                  <option key={s.id} value={s.id}>{s.label}</option>
+                                ))}
+                              </select>
+                            </td>
+                            <td>
+                              <div className="presence-toggle">
+                                <button
+                                  className={`presence-btn present ${ins.presence === true ? 'active' : ''}`}
+                                  onClick={() => handlePresence(stag.id, ins.presence === true ? null : true)}
+                                >✓ Présent</button>
+                                <button
+                                  className={`presence-btn absent ${ins.presence === false ? 'active' : ''}`}
+                                  onClick={() => handlePresence(stag.id, ins.presence === false ? null : false)}
+                                >✗ Absent</button>
+                              </div>
+                            </td>
+                            <td>
+                              <button className="btn-icon btn-danger" onClick={() => handleDesinscrire(stag.id)} title="Désinscrire">🗑</button>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
           )}
 
-          {inscriptions.length === 0 ? (
-            <div className="inscrits-empty">
-              <div className="empty-icon">👥</div>
-              <p>Aucun participant inscrit</p>
-              <button className="btn-primary" onClick={() => setShowAjout(true)}>Ajouter des participants</button>
-            </div>
-          ) : (
-            <div className="inscrits-table-wrap">
-              <table className="inscrits-table">
-                <thead>
-                  <tr>
-                    <th>Participant</th>
-                    <th>Statut</th>
-                    <th>Présence</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {inscriptions.map(ins => {
-                    const stag = stagiaires.find(s => s.id === ins.stagiaireId)
-                    if (!stag) return null
-                    const statutIns = STATUTS_INSCRIPTION.find(s => s.id === ins.statut) || STATUTS_INSCRIPTION[0]
-                    return (
-                      <tr key={ins.id} className="inscrit-row">
-                        <td>
-                          <div className="inscrit-identity">
-                            <div className="inscrit-avatar">{stag.prenom[0]}{stag.nom[0]}</div>
-                            <div>
-                              <div className="inscrit-nom">{stag.prenom} {stag.nom}</div>
-                              <div className="inscrit-cabinet">{stag.cabinet || stag.email}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <select
-                            className="statut-select"
-                            value={ins.statut}
-                            style={{ color: statutIns.color }}
-                            onChange={e => handleStatut(stag.id, e.target.value)}
-                          >
-                            {STATUTS_INSCRIPTION.map(s => (
-                              <option key={s.id} value={s.id}>{s.label}</option>
-                            ))}
-                          </select>
-                        </td>
-                        <td>
-                          <div className="presence-toggle">
-                            <button
-                              className={`presence-btn present ${ins.presence === true ? 'active' : ''}`}
-                              onClick={() => handlePresence(stag.id, ins.presence === true ? null : true)}
-                            >✓ Présent</button>
-                            <button
-                              className={`presence-btn absent ${ins.presence === false ? 'active' : ''}`}
-                              onClick={() => handlePresence(stag.id, ins.presence === false ? null : false)}
-                            >✗ Absent</button>
-                          </div>
-                        </td>
-                        <td>
-                          <button className="btn-icon btn-danger" onClick={() => handleDesinscrire(stag.id)} title="Désinscrire">🗑</button>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
+          {tab === 'evaluations' && (
+            <EvaluationsTab
+              session={session}
+              inscriptions={inscriptions}
+              stagiaires={stagiaires}
+              onStartPassation={(stagiaireId, type) => setPassation({ stagiaireId, type })}
+            />
           )}
         </div>
 
@@ -226,6 +266,122 @@ export default function SessionDetail({ session, onClose, onEdit }) {
             </div>
           </div>
         </aside>
+      </div>
+    </div>
+  )
+}
+
+function EvaluationsTab({ session, inscriptions, stagiaires, onStartPassation }) {
+  const rows = inscriptions.map(ins => {
+    const stag = stagiaires.find(s => s.id === ins.stagiaireId)
+    if (!stag) return null
+    const pre = getResultat(session.id, ins.stagiaireId, 'pre')
+    const post = getResultat(session.id, ins.stagiaireId, 'post')
+    const progression = pre && post ? calculerProgression(pre.score, post.score) : null
+    return { stag, ins, pre, post, progression }
+  }).filter(Boolean)
+
+  const moyennePre = rows.filter(r => r.pre).length
+    ? Math.round(rows.filter(r => r.pre).reduce((s, r) => s + r.pre.score, 0) / rows.filter(r => r.pre).length)
+    : null
+  const moyennePost = rows.filter(r => r.post).length
+    ? Math.round(rows.filter(r => r.post).reduce((s, r) => s + r.post.score, 0) / rows.filter(r => r.post).length)
+    : null
+  const moyenneProgression = rows.filter(r => r.progression !== null).length
+    ? Math.round(rows.filter(r => r.progression !== null).reduce((s, r) => s + r.progression, 0) / rows.filter(r => r.progression !== null).length)
+    : null
+
+  if (inscriptions.length === 0) {
+    return <div className="eval-empty">Aucun participant inscrit à cette session.</div>
+  }
+
+  const modulesCount = (session.modules || []).length
+  const questionsCount = modulesCount * 5
+
+  return (
+    <div className="eval-tab">
+      <div className="eval-info-banner">
+        <span>📋</span>
+        <span>{modulesCount} module{modulesCount > 1 ? 's' : ''} · {questionsCount} questions par questionnaire (5 par module, tirage aléatoire)</span>
+      </div>
+
+      {(moyennePre !== null || moyennePost !== null) && (
+        <div className="eval-stats">
+          {moyennePre !== null && (
+            <div className="eval-stat-card">
+              <span className="eval-stat-label">Moyenne pré</span>
+              <span className="eval-stat-val">{moyennePre}%</span>
+            </div>
+          )}
+          {moyennePost !== null && (
+            <div className="eval-stat-card">
+              <span className="eval-stat-label">Moyenne post</span>
+              <span className="eval-stat-val">{moyennePost}%</span>
+            </div>
+          )}
+          {moyenneProgression !== null && (
+            <div className="eval-stat-card highlight">
+              <span className="eval-stat-label">Progression moyenne</span>
+              <span className="eval-stat-val">{moyenneProgression >= 0 ? '+' : ''}{moyenneProgression}%</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="eval-table-wrap">
+        <table className="eval-table">
+          <thead>
+            <tr>
+              <th>Participant</th>
+              <th>Pré-formation</th>
+              <th>Post-formation</th>
+              <th>Progression</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(({ stag, pre, post, progression }) => (
+              <tr key={stag.id}>
+                <td>
+                  <div className="inscrit-identity">
+                    <div className="inscrit-avatar">{stag.prenom[0]}{stag.nom[0]}</div>
+                    <div>
+                      <div className="inscrit-nom">{stag.prenom} {stag.nom}</div>
+                      <div className="inscrit-cabinet">{stag.cabinet || stag.email}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  {pre
+                    ? <div className="eval-score-cell done">
+                        <span className="eval-score">{pre.score}%</span>
+                        <button className="eval-redo" onClick={() => onStartPassation(stag.id, 'pre')}>Refaire</button>
+                      </div>
+                    : <button className="eval-start pre" onClick={() => onStartPassation(stag.id, 'pre')}>▶ Démarrer</button>
+                  }
+                </td>
+                <td>
+                  {post
+                    ? <div className="eval-score-cell done">
+                        <span className="eval-score">{post.score}%</span>
+                        <button className="eval-redo" onClick={() => onStartPassation(stag.id, 'post')}>Refaire</button>
+                      </div>
+                    : pre
+                      ? <button className="eval-start post" onClick={() => onStartPassation(stag.id, 'post')}>▶ Démarrer</button>
+                      : <span className="eval-pending">Pré requis</span>
+                  }
+                </td>
+                <td>
+                  {progression !== null
+                    ? <span className={`eval-progression ${progression >= 0 ? 'pos' : 'neg'}`}>
+                        {progression >= 0 ? '+' : ''}{progression}%
+                      </span>
+                    : <span className="eval-pending">—</span>
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

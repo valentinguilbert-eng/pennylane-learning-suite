@@ -1,0 +1,327 @@
+import { useState, useMemo } from 'react'
+import { ARTICLES, SOURCES, NIVEAUX } from '../data/veille'
+import { getTraitements, getTraitement, enregistrerTraitement, DECISIONS, exportRegistreCSV } from '../data/traitement'
+import { getFormateurs, addFormateur, updateFormateur, removeFormateur } from '../data/formateurs'
+import { RESPONSABLE } from '../data/formateurs'
+import './TableauDeBord.css'
+
+// ── Modale de traitement ──────────────────────────────────────────────────────
+function ModaleTraitement({ article, onClose, onSave }) {
+  const source = SOURCES.find(s => s.id === article.source_id)
+  const [decision, setDecision] = useState('')
+  const [commentaire, setCommentaire] = useState('')
+  const [destinataires, setDestinataires] = useState([])
+  const formateurs = getFormateurs()
+
+  function toggleDestinataire(email) {
+    setDestinataires(prev => prev.includes(email) ? prev.filter(e => e !== email) : [...prev, email])
+  }
+
+  function handleSave() {
+    if (!decision) return
+    onSave({
+      articleId: article.id,
+      articleTitre: article.titre,
+      articleSource: source?.nom || article.source_id,
+      articleThematique: article.thematique,
+      articleDate: article.date,
+      decision,
+      commentaire,
+      destinataires: decision === 'diffuser' ? destinataires : [],
+    })
+    onClose()
+  }
+
+  return (
+    <div className="modale-overlay" onClick={onClose}>
+      <div className="modale" onClick={e => e.stopPropagation()}>
+        <div className="modale-header">
+          <h2>Traiter cet article</h2>
+          <button className="modale-close" onClick={onClose}>✕</button>
+        </div>
+
+        <div className="modale-article">
+          <span className={`thematique-badge thematique-${article.thematique}`}>{article.thematique}</span>
+          <p className="modale-titre">{article.titre}</p>
+          <p className="modale-meta">{source?.nom} · {new Date(article.date).toLocaleDateString('fr-FR')}</p>
+        </div>
+
+        <div className="modale-section">
+          <p className="modale-label">Décision</p>
+          <div className="decision-grid">
+            {Object.entries(DECISIONS).map(([k, v]) => (
+              <button
+                key={k}
+                className={`decision-btn ${decision === k ? 'actif' : ''}`}
+                onClick={() => setDecision(k)}
+              >
+                <span className="decision-icon">{v.icon}</span>
+                <span>{v.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {decision === 'diffuser' && (
+          <div className="modale-section">
+            <p className="modale-label">Destinataires</p>
+            <div className="destinataires-list">
+              {formateurs.filter(f => f.actif).map(f => (
+                <label key={f.id} className="destinataire-item">
+                  <input
+                    type="checkbox"
+                    checked={destinataires.includes(f.email)}
+                    onChange={() => toggleDestinataire(f.email)}
+                  />
+                  {f.prenom} {f.nom}
+                  <span className="destinataire-email">{f.email}</span>
+                </label>
+              ))}
+            </div>
+            <button className="btn-tous" onClick={() => setDestinataires(formateurs.filter(f => f.actif).map(f => f.email))}>
+              Sélectionner tous
+            </button>
+          </div>
+        )}
+
+        <div className="modale-section">
+          <p className="modale-label">Commentaire (optionnel)</p>
+          <textarea
+            className="modale-textarea"
+            placeholder="Contexte, action à mener…"
+            value={commentaire}
+            onChange={e => setCommentaire(e.target.value)}
+            rows={3}
+          />
+        </div>
+
+        <div className="modale-footer">
+          <button className="btn-annuler" onClick={onClose}>Annuler</button>
+          <button className="btn-valider" onClick={handleSave} disabled={!decision}>
+            Enregistrer la trace
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Section gestion formateurs ────────────────────────────────────────────────
+function GestionFormateurs() {
+  const [formateurs, setFormateurs] = useState(getFormateurs())
+  const [form, setForm] = useState({ prenom: '', nom: '', email: '' })
+  const [erreur, setErreur] = useState('')
+
+  function handleAdd(e) {
+    e.preventDefault()
+    if (!form.prenom || !form.nom || !form.email) { setErreur('Tous les champs sont requis.'); return }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setErreur('Email invalide.'); return }
+    setFormateurs(addFormateur(form.prenom, form.nom, form.email))
+    setForm({ prenom: '', nom: '', email: '' })
+    setErreur('')
+  }
+
+  function handleToggle(id) {
+    const f = formateurs.find(f => f.id === id)
+    setFormateurs(updateFormateur(id, { actif: !f.actif }))
+  }
+
+  function handleRemove(id) {
+    if (!window.confirm('Supprimer ce formateur ?')) return
+    setFormateurs(removeFormateur(id))
+  }
+
+  return (
+    <div className="gf-section">
+      <h2 className="section-titre">Équipe de formateurs</h2>
+
+      <table className="gf-table">
+        <thead>
+          <tr>
+            <th>Prénom</th><th>Nom</th><th>Email</th><th>Statut</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {formateurs.map(f => (
+            <tr key={f.id} className={!f.actif ? 'formateur-inactif' : ''}>
+              <td>{f.prenom}</td>
+              <td>{f.nom}</td>
+              <td className="td-email">{f.email}</td>
+              <td>
+                <button
+                  className={`badge-statut ${f.actif ? 'actif' : 'inactif'}`}
+                  onClick={() => handleToggle(f.id)}
+                  title={f.actif ? 'Désactiver' : 'Réactiver'}
+                >
+                  {f.actif ? 'Actif' : 'Inactif'}
+                </button>
+              </td>
+              <td>
+                <button className="btn-suppr" onClick={() => handleRemove(f.id)} title="Supprimer">✕</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <form className="gf-form" onSubmit={handleAdd}>
+        <h3 className="gf-form-titre">Ajouter un formateur</h3>
+        <div className="gf-fields">
+          <input placeholder="Prénom" value={form.prenom} onChange={e => setForm(p => ({ ...p, prenom: e.target.value }))} />
+          <input placeholder="Nom" value={form.nom} onChange={e => setForm(p => ({ ...p, nom: e.target.value }))} />
+          <input placeholder="email@pennylane.com" type="email" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} />
+          <button type="submit" className="btn-ajouter">Ajouter</button>
+        </div>
+        {erreur && <p className="gf-erreur">{erreur}</p>}
+      </form>
+    </div>
+  )
+}
+
+// ── Tableau de bord principal ─────────────────────────────────────────────────
+export default function TableauDeBord() {
+  const [traitements, setTraitements] = useState(getTraitements())
+  const [modaleArticle, setModaleArticle] = useState(null)
+  const [onglet, setOnglet] = useState('veille')
+
+  function handleSaveTraitement(data) {
+    enregistrerTraitement(data)
+    setTraitements(getTraitements())
+  }
+
+  function handleExport() {
+    const csv = exportRegistreCSV(traitements)
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `registre-veille-${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const stats = useMemo(() => ({
+    total: ARTICLES.length,
+    traites: traitements.length,
+    diffuses: traitements.filter(t => t.decision === 'diffuser').length,
+    enAttente: ARTICLES.length - traitements.length,
+  }), [traitements])
+
+  return (
+    <div className="tdb-page">
+      <div className="tdb-inner">
+        <div className="tdb-head">
+          <div>
+            <h1 className="tdb-title">Tableau de bord</h1>
+            <p className="tdb-subtitle">Responsable : {RESPONSABLE.prenom} {RESPONSABLE.nom} · {RESPONSABLE.email}</p>
+          </div>
+          <div className="tdb-head-actions">
+            <button className="btn-export" onClick={handleExport} title="Exporter le registre Qualiopi">
+              ↓ Registre Qualiopi (CSV)
+            </button>
+          </div>
+        </div>
+
+        {/* Statistiques */}
+        <div className="stats-grid">
+          <div className="stat-card"><span className="stat-val">{stats.total}</span><span className="stat-lbl">Articles reçus</span></div>
+          <div className="stat-card stat-ok"><span className="stat-val">{stats.traites}</span><span className="stat-lbl">Traités</span></div>
+          <div className="stat-card stat-vert"><span className="stat-val">{stats.diffuses}</span><span className="stat-lbl">Diffusés</span></div>
+          <div className="stat-card stat-warn"><span className="stat-val">{stats.enAttente}</span><span className="stat-lbl">En attente</span></div>
+        </div>
+
+        {/* Onglets */}
+        <div className="tdb-onglets">
+          <button className={`onglet-btn ${onglet === 'veille' ? 'actif' : ''}`} onClick={() => setOnglet('veille')}>Veille à traiter</button>
+          <button className={`onglet-btn ${onglet === 'registre' ? 'actif' : ''}`} onClick={() => setOnglet('registre')}>Registre des traces</button>
+          <button className={`onglet-btn ${onglet === 'formateurs' ? 'actif' : ''}`} onClick={() => setOnglet('formateurs')}>Formateurs</button>
+        </div>
+
+        {/* Veille à traiter */}
+        {onglet === 'veille' && (
+          <div className="tdb-table-wrap">
+            <table className="tdb-table">
+              <thead>
+                <tr>
+                  <th>Source</th><th>Date</th><th>Titre</th><th>Thématique</th><th>Niveau</th><th>Statut</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ARTICLES.sort((a, b) => new Date(b.date) - new Date(a.date)).map(article => {
+                  const source = SOURCES.find(s => s.id === article.source_id)
+                  const trace = getTraitement(article.id)
+                  const decision = trace ? DECISIONS[trace.decision] : null
+                  return (
+                    <tr key={article.id} className={trace ? 'ligne-traitee' : ''}>
+                      <td className="td-source">{source?.nom}</td>
+                      <td className="td-date">{new Date(article.date).toLocaleDateString('fr-FR')}</td>
+                      <td className="td-titre">{article.titre}</td>
+                      <td><span className={`thematique-badge thematique-${article.thematique}`}>{article.thematique}</span></td>
+                      <td><span className={`niveau-badge niveau-${article.niveau}`}>{NIVEAUX[article.niveau].label}</span></td>
+                      <td>
+                        {decision
+                          ? <span className="trace-badge" style={{ color: decision.color }}>{decision.icon} {decision.label}</span>
+                          : <span className="trace-badge en-attente">⏳ En attente</span>
+                        }
+                      </td>
+                      <td>
+                        <button className="btn-traiter" onClick={() => setModaleArticle(article)}>
+                          {trace ? 'Modifier' : 'Traiter'}
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Registre des traces */}
+        {onglet === 'registre' && (
+          <div className="tdb-table-wrap">
+            {traitements.length === 0 ? (
+              <div className="registre-empty">Aucun article traité pour l'instant.</div>
+            ) : (
+              <table className="tdb-table">
+                <thead>
+                  <tr>
+                    <th>Date traitement</th><th>Titre</th><th>Source</th><th>Décision</th><th>Traité par</th><th>Destinataires</th><th>Commentaire</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...traitements].sort((a, b) => new Date(b.traiteAt) - new Date(a.traiteAt)).map(t => {
+                    const d = DECISIONS[t.decision]
+                    return (
+                      <tr key={t.id}>
+                        <td className="td-date">{new Date(t.traiteAt).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                        <td className="td-titre">{t.articleTitre}</td>
+                        <td>{t.articleSource}</td>
+                        <td><span className="trace-badge" style={{ color: d?.color }}>{d?.icon} {d?.label}</span></td>
+                        <td className="td-email">{t.traitePar}</td>
+                        <td className="td-dest">{t.destinataires.length > 0 ? `${t.destinataires.length} formateur(s)` : '—'}</td>
+                        <td className="td-commentaire">{t.commentaire || '—'}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
+        {/* Formateurs */}
+        {onglet === 'formateurs' && <GestionFormateurs />}
+
+      </div>
+
+      {modaleArticle && (
+        <ModaleTraitement
+          article={modaleArticle}
+          onClose={() => setModaleArticle(null)}
+          onSave={handleSaveTraitement}
+        />
+      )}
+    </div>
+  )
+}

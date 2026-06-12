@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { saveSession, STATUTS, MODALITES, FORMATS, ALL_MODULES, THEMATIQUES } from '../data/sessions'
+import { saveSession, STATUTS, MODALITES, FORMATS, ALL_MODULES } from '../data/sessions'
+import { THEMATIQUES } from '../data/catalogue-afs'
 import './SessionForm.css'
 
 const EMPTY = {

@@ -34,14 +34,17 @@
 }
 
 .logo-svg {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
+  background: rgba(0,248,114,0.12);
+  border-radius: 8px;
+  padding: 3px;
 }
 
 .logo-text {
   font-size: 17px;
   font-weight: 800;
-  color: var(--blanc);
+  color: var(--vert);
   letter-spacing: -0.04em;
 }
 
@@ -67,13 +70,13 @@
   border-radius: 8px;
   font-size: 13.5px;
   font-weight: 500;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.82);
   transition: all 0.15s;
   letter-spacing: -0.01em;
 }
 
 .nav-link:hover:not(.disabled) {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.12);
   color: var(--blanc);
 }
 
@@ -93,6 +96,50 @@
   margin-left: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Nav dot (tableau de bord) */
+.nav-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  background: var(--vert);
+  border-radius: 50%;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+/* User zone */
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 16px;
+  flex-shrink: 0;
+}
+
+.role-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+.role-admin     { background: var(--vert); color: var(--bg-dark); }
+.role-formateur { background: rgba(255,255,255,0.15); color: var(--blanc); }
+
+.btn-logout {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  background: transparent;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all 0.12s;
+}
+.btn-logout:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--blanc);
 }
 
 /* Main */
