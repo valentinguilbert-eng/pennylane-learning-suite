@@ -180,15 +180,36 @@ function GestionFormateurs() {
   )
 }
 
+const LAST_BACKUP_KEY = 'pls_last_backup'
+
+function getLastBackup() {
+  const v = localStorage.getItem(LAST_BACKUP_KEY)
+  return v ? new Date(v) : null
+}
+
+function setLastBackup() {
+  localStorage.setItem(LAST_BACKUP_KEY, new Date().toISOString())
+}
+
+function shouldWarnBackup(traitements) {
+  if (traitements.length === 0) return false
+  const last = getLastBackup()
+  if (!last) return true
+  return (Date.now() - last.getTime()) > 24 * 60 * 60 * 1000
+}
+
 // ── Tableau de bord principal ─────────────────────────────────────────────────
 export default function TableauDeBord() {
   const [traitements, setTraitements] = useState(getTraitements())
   const [modaleArticle, setModaleArticle] = useState(null)
   const [onglet, setOnglet] = useState('veille')
+  const [banniereVisible, setBanniereVisible] = useState(() => shouldWarnBackup(getTraitements()))
 
   function handleSaveTraitement(data) {
     enregistrerTraitement(data)
-    setTraitements(getTraitements())
+    const updated = getTraitements()
+    setTraitements(updated)
+    setBanniereVisible(shouldWarnBackup(updated))
   }
 
   function handleExport() {
@@ -210,6 +231,8 @@ export default function TableauDeBord() {
     a.download = `sauvegarde-veille-${new Date().toISOString().slice(0, 10)}.json`
     a.click()
     URL.revokeObjectURL(url)
+    setLastBackup()
+    setBanniereVisible(false)
   }
 
   function handleRestaurer(e) {
@@ -223,6 +246,8 @@ export default function TableauDeBord() {
         if (!window.confirm(`Restaurer ${data.length} trace(s) ? Les données actuelles seront remplacées.`)) return
         localStorage.setItem('pls_traitements', JSON.stringify(data))
         setTraitements(data)
+        setLastBackup()
+        setBanniereVisible(false)
         alert('Restauration réussie ✓')
       } catch {
         alert('Fichier invalide — utilisez un fichier de sauvegarde .json généré par cette application.')
@@ -260,6 +285,14 @@ export default function TableauDeBord() {
             </button>
           </div>
         </div>
+
+        {/* Bannière de rappel sauvegarde */}
+        {banniereVisible && (
+          <div className="banniere-backup">
+            <span>⚠️ Tu n'as pas sauvegardé depuis plus de 24h — clique sur <strong>↓ Sauvegarder</strong> pour protéger ton travail.</span>
+            <button className="banniere-close" onClick={() => setBanniereVisible(false)}>✕</button>
+          </div>
+        )}
 
         {/* Statistiques */}
         <div className="stats-grid">
