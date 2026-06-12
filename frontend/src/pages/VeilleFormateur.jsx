@@ -42,7 +42,7 @@ export default function VeilleFormateur() {
                     </div>
                     <span className="vf-diffuse-badge">📢 Diffusé</span>
                   </div>
-                  <h2 className="vf-titre">{article.titre}</h2>
+                  <h2 className="vf-titre"><a href={article.url} target="_blank" rel="noopener noreferrer" className="lien-titre">{article.titre}</a></h2>
                   <p className="vf-resume">{article.resume}</p>
                   <div className="vf-note">
                     <span className="vf-note-label">Message de la responsable</span>

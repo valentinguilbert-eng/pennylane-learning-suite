@@ -30,6 +30,8 @@
 }
 
 .vf-titre { font-size: 16px; font-weight: 700; color: var(--texte); line-height: 1.4; margin-bottom: 8px; }
+.vf-titre .lien-titre { color: inherit; text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; transition: color 0.12s; }
+.vf-titre .lien-titre:hover { color: var(--bg-medium); text-decoration-color: var(--bg-medium); }
 .vf-resume { font-size: 14px; color: var(--texte-secondaire); line-height: 1.6; margin-bottom: 12px; }
 
 .vf-note {
