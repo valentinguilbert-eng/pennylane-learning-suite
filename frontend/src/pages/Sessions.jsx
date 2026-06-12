@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react'
 import { getSessions, deleteSession, seedDemoSessions, STATUTS, ALL_MODULES, FORMATS } from '../data/sessions'
+import { seedDemoStagiaires } from '../data/stagiaires'
 import SessionForm from '../components/SessionForm'
+import SessionDetail from '../components/SessionDetail'
 import './Sessions.css'
 
 export default function Sessions() {
   const [sessions, setSessions] = useState([])
-  const [view, setView] = useState('liste') // 'liste' | 'form'
+  const [view, setView] = useState('liste') // 'liste' | 'form' | 'detail'
   const [editing, setEditing] = useState(null)
   const [filtreStatut, setFiltreStatut] = useState('tous')
 
   useEffect(() => {
     seedDemoSessions()
+    seedDemoStagiaires()
     setSessions(getSessions())
   }, [])
 
@@ -39,6 +42,11 @@ export default function Sessions() {
     setEditing(null)
   }
 
+  function handleOpenDetail(session) {
+    setEditing(session)
+    setView('detail')
+  }
+
   const sessionsFiltrees = filtreStatut === 'tous'
     ? sessions
     : sessions.filter(s => s.statut === filtreStatut)
@@ -50,7 +58,17 @@ export default function Sessions() {
       <SessionForm
         session={editing}
         onSaved={handleSaved}
-        onCancel={() => setView('liste')}
+        onCancel={() => setView(editing ? 'detail' : 'liste')}
+      />
+    )
+  }
+
+  if (view === 'detail' && editing) {
+    return (
+      <SessionDetail
+        session={editing}
+        onClose={() => { refresh(); setView('liste') }}
+        onEdit={() => setView('form')}
       />
     )
   }
@@ -95,6 +113,7 @@ export default function Sessions() {
             <SessionCard
               key={session.id}
               session={session}
+              onOpen={() => handleOpenDetail(session)}
               onEdit={() => handleEdit(session)}
               onDelete={() => handleDelete(session.id)}
             />
@@ -105,7 +124,7 @@ export default function Sessions() {
   )
 }
 
-function SessionCard({ session, onEdit, onDelete }) {
+function SessionCard({ session, onOpen, onEdit, onDelete }) {
   const statut = STATUTS.find(s => s.id === session.statut) || STATUTS[0]
   const format = FORMATS.find(f => f.id === session.format)
   const modulesDetails = (session.modules || [])
@@ -121,7 +140,7 @@ function SessionCard({ session, onEdit, onDelete }) {
     : 0
 
   return (
-    <div className="session-card">
+    <div className="session-card" onClick={onOpen} style={{ cursor: 'pointer' }}>
       <div className="session-card-header">
         <div className="session-card-left">
           <div className="session-statut-badge" style={{ background: statut.color + '20', color: statut.color }}>
@@ -130,7 +149,7 @@ function SessionCard({ session, onEdit, onDelete }) {
           <h3 className="session-titre">{session.titre || 'Session sans titre'}</h3>
           <div className="session-client">{session.client || 'Client non renseigné'}</div>
         </div>
-        <div className="session-card-actions">
+        <div className="session-card-actions" onClick={e => e.stopPropagation()}>
           <button className="btn-icon" onClick={onEdit} title="Modifier">✏️</button>
           <button className="btn-icon btn-danger" onClick={onDelete} title="Supprimer">🗑</button>
         </div>

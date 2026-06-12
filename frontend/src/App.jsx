@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import CatalogueAFS from './pages/CatalogueAFS'
 import Sessions from './pages/Sessions'
+import Stagiaires from './pages/Stagiaires'
 import './App.css'
 
 const PAGES = [
   { id: 'catalogue', label: 'Catalogue AFS' },
   { id: 'sessions', label: 'Sessions' },
-  { id: 'stagiaires', label: 'Stagiaires', disabled: true },
+  { id: 'stagiaires', label: 'Stagiaires' },
+  { id: 'documents', label: 'Documents', disabled: true },
 ]
 
 export default function App() {
@@ -41,6 +43,7 @@ export default function App() {
       <main className="main">
         {page === 'catalogue' && <CatalogueAFS />}
         {page === 'sessions' && <Sessions />}
+        {page === 'stagiaires' && <Stagiaires />}
       </main>
     </div>
   )
