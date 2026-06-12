@@ -68,15 +68,15 @@
   padding: 7px 14px;
   border-radius: 8px;
   font-size: 13.5px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.82);
+  font-weight: 600;
+  color: var(--blanc);
   transition: all 0.15s;
   letter-spacing: -0.01em;
 }
 
 .nav-link:hover:not(.disabled) {
-  background: rgba(255,255,255,0.12);
-  color: var(--blanc);
+  background: rgba(0, 248, 114, 0.15);
+  color: var(--vert);
 }
 
 .nav-link.active {
