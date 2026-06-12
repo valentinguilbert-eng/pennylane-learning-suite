@@ -3,23 +3,22 @@ import { login } from '../data/auth'
 import './Login.css'
 
 export default function Login({ onLogin, onWebinaires }) {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
     setError('')
-    setTimeout(() => {
-      const role = login(password)
-      if (role) {
-        onLogin(role)
-      } else {
-        setError('Mot de passe incorrect.')
-        setLoading(false)
-      }
-    }, 400)
+    try {
+      const role = await login(email, password)
+      onLogin(role)
+    } catch (err) {
+      setError(err.message || 'Email ou mot de passe incorrect.')
+      setLoading(false)
+    }
   }
 
   return (
@@ -38,6 +37,18 @@ export default function Login({ onLogin, onWebinaires }) {
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="login-field">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={e => { setEmail(e.target.value); setError('') }}
+              placeholder="prenom.nom@pennylane.com"
+              autoFocus
+              autoComplete="username"
+            />
+          </div>
+          <div className="login-field">
             <label htmlFor="password">Mot de passe</label>
             <input
               id="password"
@@ -45,20 +56,14 @@ export default function Login({ onLogin, onWebinaires }) {
               value={password}
               onChange={e => { setPassword(e.target.value); setError('') }}
               placeholder="••••••••••"
-              autoFocus
               autoComplete="current-password"
             />
           </div>
           {error && <p className="login-error">{error}</p>}
-          <button className="login-btn" type="submit" disabled={loading || !password}>
+          <button className="login-btn" type="submit" disabled={loading || !email || !password}>
             {loading ? 'Connexion…' : 'Se connecter'}
           </button>
         </form>
-
-        <p className="login-hint">
-          Administrateur : <code>admin2026</code><br />
-          Formateur : <code>formateur2026</code>
-        </p>
 
         {onWebinaires && (
           <button type="button" className="login-webinaires-link" onClick={onWebinaires}>
