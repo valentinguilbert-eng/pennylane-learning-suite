@@ -141,6 +141,19 @@
   color: var(--blanc);
 }
 
+.btn-login {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bg-dark);
+  background: var(--vert);
+  padding: 7px 16px;
+  border-radius: 8px;
+  transition: background 0.12s;
+}
+.btn-login:hover {
+  background: #00E066;
+}
+
 /* Main */
 .main {
   flex: 1;

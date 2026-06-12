@@ -126,3 +126,16 @@
   color: var(--bg-dark);
   font-weight: 700;
 }
+
+.login-webinaires-link {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--bg-medium);
+  background: transparent;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.login-webinaires-link:hover {
+  color: var(--bg-dark);
+}
