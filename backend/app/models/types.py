@@ -147,4 +147,5 @@ class EmailEnvoi(msgspec.Struct, kw_only=True):
     type: str  # convocation | attestation | emargement
     sujet: str
     session_id: str | None = None
+    joindre_pdf: bool = True  # joindre le document en PDF (sinon email HTML seul)
     destinataires: list[EmailDestinataire]

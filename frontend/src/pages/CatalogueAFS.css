@@ -72,14 +72,18 @@
 
 /* Aside */
 .catalogue-aside { }
-.aside-sticky { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 16px; }
+.aside-stack { display: flex; flex-direction: column; gap: 16px; }
 
-/* Devis panel */
+/* Devis panel — collé en haut pour rester visible pendant le scroll du catalogue */
 .devis-panel {
+  position: sticky;
+  top: 80px;
+  z-index: 2;
   background: var(--blanc);
   border-radius: var(--radius);
   padding: 20px;
   border: 2px solid var(--vert);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -152,5 +156,25 @@
 
 @media (max-width: 900px) {
   .catalogue-layout { grid-template-columns: 1fr; }
-  .aside-sticky { position: static; }
+
+  /* La grille tarifaire passe sous les modules… */
+  .aside-stack { gap: 0; }
+
+  /* …mais « Ma sélection » devient une barre flottante toujours visible
+     en bas de l'écran, à côté du catalogue qu'on est en train de parcourir. */
+  .devis-panel {
+    position: fixed;
+    top: auto;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    max-height: 60vh;
+    overflow-y: auto;
+    margin: 0;
+    box-shadow: 0 -2px 24px rgba(0, 0, 0, 0.18);
+    z-index: 50;
+  }
+
+  /* Réserve de l'espace pour que la barre ne masque pas le bas du contenu. */
+  .catalogue { padding-bottom: 220px; }
 }

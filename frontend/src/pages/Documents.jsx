@@ -94,10 +94,14 @@ export default function Documents() {
     try {
       const res = await emails.send(payload)
       const suffixe = sansEmail > 0 ? ` · ${sansEmail} sans email ignoré(s)` : ''
+      // Mention du PDF : joint si tous les envois réussis le portent, sinon on signale l'absence
+      const pdfInfo = res.envoyes > 0 && res.avec_pdf === res.envoyes
+        ? ' · PDF joint'
+        : (res.avec_pdf === 0 ? ' · sans PDF (génération indisponible)' : '')
       if (res.echecs > 0) {
         setSendResult({ ok: false, message: `${res.envoyes}/${res.total} envoyé(s), ${res.echecs} en échec${suffixe}.` })
       } else {
-        setSendResult({ ok: true, message: `${res.envoyes} email${res.envoyes > 1 ? 's' : ''} envoyé${res.envoyes > 1 ? 's' : ''} avec succès${suffixe}.` })
+        setSendResult({ ok: true, message: `${res.envoyes} email${res.envoyes > 1 ? 's' : ''} envoyé${res.envoyes > 1 ? 's' : ''} avec succès${pdfInfo}${suffixe}.` })
       }
     } catch (err) {
       // Backend injoignable (mode démo GitHub Pages) → simulation gracieuse, comme l'auth

@@ -52,14 +52,17 @@ async def send_emails(data: EmailEnvoi, request: Request) -> dict:
             html=dest.html,
             session_id=data.session_id,
             stagiaire_id=dest.stagiaire_id,
+            joindre_pdf=data.joindre_pdf,
         )
         resultats.append({"email": dest.email, "nom": dest.nom, **res})
 
     envoyes = sum(1 for r in resultats if r.get("ok"))
+    avec_pdf = sum(1 for r in resultats if r.get("ok") and r.get("pdf_joint"))
     return {
         "envoyes": envoyes,
         "total": len(resultats),
         "echecs": len(resultats) - envoyes,
+        "avec_pdf": avec_pdf,
         "resultats": resultats,
     }
 
