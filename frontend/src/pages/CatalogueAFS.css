@@ -70,15 +70,24 @@
 .webinaire-inscrire:hover { opacity: 0.85; }
 .webinaire-inscrire.inscrire-devis { background: #EEF2FF; color: #6366F1; }
 
-/* Aside */
-.catalogue-aside { }
-.aside-stack { display: flex; flex-direction: column; gap: 16px; }
-
-/* Devis panel — collé en haut pour rester visible pendant le scroll du catalogue */
-.devis-panel {
+/* Aside — la colonne entière (sélection + grille) reste collée pendant le scroll
+   du catalogue. On la sticke d'un seul bloc : les deux panneaux restent solidaires
+   et donc toujours visibles ensemble, au lieu que « Ma sélection » passe par-dessus
+   la grille. Le max-height + scroll interne garantit qu'on voit l'ensemble même si
+   l'écran est court. */
+.catalogue-aside {
   position: sticky;
   top: 80px;
-  z-index: 2;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  /* place pour la scrollbar sans rogner l'ombre des panneaux */
+  padding-right: 2px;
+  scrollbar-gutter: stable;
+}
+.aside-stack { display: flex; flex-direction: column; gap: 16px; }
+
+/* Devis panel — pas de sticky individuel : c'est l'aside complet qui colle. */
+.devis-panel {
   background: var(--blanc);
   border-radius: var(--radius);
   padding: 20px;
@@ -157,7 +166,15 @@
 @media (max-width: 900px) {
   .catalogue-layout { grid-template-columns: 1fr; }
 
-  /* La grille tarifaire passe sous les modules… */
+  /* En colonne unique le sticky n'a plus de sens : on libère l'aside… */
+  .catalogue-aside {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  /* …la grille tarifaire passe sous les modules… */
   .aside-stack { gap: 0; }
 
   /* …mais « Ma sélection » devient une barre flottante toujours visible
